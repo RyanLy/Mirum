@@ -102,8 +102,9 @@ class Main extends React.Component {
     return (
       <span>
         <div className="row">
-          <div className="pull-right">
+          <div className="col-md-12">
             <RaisedButton label="Add points entry"
+                          className="pull-right"
                           onTouchTap={this.handleOpen.bind(this)}
                           backgroundColor="#dcdcdc"
                           icon={
