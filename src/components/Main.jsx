@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import MirumTable from './MirumTable.jsx';
 import FontIcon from 'material-ui/FontIcon';
+import {Card, CardTitle} from 'material-ui/Card';
 import { auth, database, FIREBASE_SERVER_TIMESTAMP } from './../client';
 
 class Main extends React.Component {
@@ -63,12 +64,54 @@ class Main extends React.Component {
     });
   }
 
-  renderAuthorizedContent() {
-    const POSSIBLE_POINT_VALUES = [1,2,3,4,5,6,7,8,9,10];
-    const iconStyles = {
-      fontSize: '35px'
+  renderAnalytics() {
+    const analyticsStyle = {
+      marginBottom: '15px'
     }
 
+    const cardStyle = {
+      width: '275px',
+      marginBottom: '10px'
+    }
+
+    const currentUID = this.state.user.uid;
+    const totalScore = {};
+
+    Object.keys(this.state.tableEntries).forEach(key => {
+      const tableEntry = this.state.tableEntries[key];
+      if (!totalScore[tableEntry.user_id]) {
+        totalScore[tableEntry.user_id] = 0;
+      }
+      totalScore[tableEntry.user_id] += tableEntry.points;
+    });
+
+    const everyoneElse = Object.keys(totalScore).filter(userId => userId !== currentUID);
+
+    return (
+      <div className="row" style={analyticsStyle}>
+        <div className="col-md-3">
+          <Card style={cardStyle}>
+           <CardTitle title="My Score" subtitle={totalScore[currentUID]} subtitleColor='green' />
+         </Card>
+        </div>
+        {
+          everyoneElse.map(userId => {
+            const label = `${this.state.users[userId]}'s Score`;
+            return (
+              <div className="col-md-3">
+                <Card style={cardStyle}>
+                 <CardTitle title={label} subtitle={totalScore[userId]} subtitleColor='black' />
+               </Card>
+              </div>
+            )
+          })
+        }
+     </div>
+    )
+  }
+
+  renderAuthorizedContent() {
+    const POSSIBLE_POINT_VALUES = [1,2,3,4,5,6,7,8,9,10];
     const actions = [
       <FlatButton
         label="Cancel"
@@ -101,17 +144,15 @@ class Main extends React.Component {
 
     return (
       <span>
+        {this.renderAnalytics()}
         <div className="row">
           <div className="col-md-12">
-            <RaisedButton label="Add points entry"
-                          className="pull-right"
-                          onTouchTap={this.handleOpen.bind(this)}
-                          backgroundColor="#dcdcdc"
-                          icon={
-                            <FontIcon style={iconStyles}
-                                      className="glyphicon-plus"></FontIcon>
-                          }
-            />
+          <RaisedButton label="Add points entry"
+                        className="pull-right"
+                        onTouchTap={this.handleOpen.bind(this)}
+                        backgroundColor="#dcdcdc"
+                        icon={<FontIcon className="material-icons">add</FontIcon>}
+          />
             <Dialog
               title="Add new points entry"
               actions={actions}

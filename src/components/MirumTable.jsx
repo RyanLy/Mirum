@@ -16,10 +16,10 @@ class MirumTable extends React.Component {
           displaySelectAll={false}
           adjustForCheckbox={false}>
           <TableRow>
-            <TableHeaderColumn>Person</TableHeaderColumn>
-            <TableHeaderColumn>Points</TableHeaderColumn>
+            <TableHeaderColumn style={{ 'width': '120px' }}>Person</TableHeaderColumn>
+            <TableHeaderColumn style={{ 'width': '60px' }}>Points</TableHeaderColumn>
             <TableHeaderColumn>Reason</TableHeaderColumn>
-            <TableHeaderColumn className='hidden-xs'>Date</TableHeaderColumn>
+            <TableHeaderColumn style={{ 'width': '250px' }} className='hidden-xs'>Date</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
@@ -28,10 +28,10 @@ class MirumTable extends React.Component {
               const entry = this.props.tableEntries[key]
               return (
                 <TableRow>
-                  <TableRowColumn>{this.props.users[entry.user_id]}</TableRowColumn>
-                  <TableRowColumn>{entry.points}</TableRowColumn>
-                  <TableRowColumn>{entry.reason}</TableRowColumn>
-                  <TableRowColumn className='hidden-xs'>{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableRowColumn>
+                  <TableRowColumn style={{ 'width': '120px', 'textOverflow': 'clip' }}>{this.props.users[entry.user_id]}</TableRowColumn>
+                  <TableRowColumn style={{ 'width': '60px' }}>{entry.points}</TableRowColumn>
+                  <TableRowColumn title={entry.reason}>{entry.reason}</TableRowColumn>
+                  <TableRowColumn style={{ 'width': '250px' }} className='hidden-xs'>{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableRowColumn>
                 </TableRow>
               )
             })
