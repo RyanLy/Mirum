@@ -77,7 +77,7 @@ class Index extends React.Component {
           <div>
             <div style={textAlign}>
               <Paper zDepth={2} circle style={style}>
-                <img style={imgStyle} src={this.state.user.photoURL} />
+                <img style={imgStyle} src={`${this.state.user.providerData[0].photoURL}?height=500`} />
               </Paper>
               <div>
                 {`${this.state.user.displayName}`}
