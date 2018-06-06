@@ -1,10 +1,9 @@
-import React from 'react'
-import moment from 'moment'
-
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn}
+import React from 'react';
+import moment from 'moment';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn }
   from 'material-ui/Table';
 import FontIcon from 'material-ui/FontIcon';
-import Dialog from 'material-ui/Dialog';
+
 import EditDialog from './EditDialog.jsx';
 
 class MirumTable extends React.Component {
@@ -12,12 +11,14 @@ class MirumTable extends React.Component {
     super(props);
     this.state = {
       open: false,
-      tableEntry: { key: null, user_id: Object.keys(this.props.users)[0], points: 1, reason: '' },
-    }
+      tableEntry: {
+        key: null, user_id: Object.keys(this.props.users)[0], points: 1, reason: '',
+      },
+    };
   }
 
   handleEdit(entry) {
-    this.setState({ open: true, tableEntry: {...entry} });
+    this.setState({ open: true, tableEntry: { ...entry } });
   }
 
   onDone() {
@@ -30,13 +31,14 @@ class MirumTable extends React.Component {
         <Table>
           <TableHeader
             displaySelectAll={false}
-            adjustForCheckbox={false}>
+            adjustForCheckbox={false}
+          >
             <TableRow>
-              <TableHeaderColumn style={{ 'width': '120px' }}>Person</TableHeaderColumn>
-              <TableHeaderColumn style={{ 'width': '60px' }}>Points</TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '120px' }}>Person</TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '60px' }}>Points</TableHeaderColumn>
               <TableHeaderColumn>Reason</TableHeaderColumn>
-              <TableHeaderColumn style={{ 'width': '250px' }} className='hidden-xs'>Date</TableHeaderColumn>
-              <TableHeaderColumn style={{ 'width': '60px' }}></TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '250px' }} className="hidden-xs">Date</TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '60px' }} />
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
@@ -46,23 +48,23 @@ class MirumTable extends React.Component {
                 entry.key = key;
                 return (
                   <TableRow>
-                    <TableRowColumn style={{ 'width': '120px', 'textOverflow': 'clip' }}>{this.props.users[entry.user_id]}</TableRowColumn>
-                    <TableRowColumn style={{ 'width': '60px' }}>{entry.points}</TableRowColumn>
+                    <TableRowColumn style={{ width: '120px', textOverflow: 'clip' }}>{this.props.users[entry.user_id]}</TableRowColumn>
+                    <TableRowColumn style={{ width: '60px' }}>{entry.points}</TableRowColumn>
                     <TableRowColumn title={entry.reason}>{entry.reason}</TableRowColumn>
-                    <TableRowColumn style={{ 'width': '250px' }} className='hidden-xs'>{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableRowColumn>
-                    <TableHeaderColumn style={{ 'width': '60px' }}>
-                      <FontIcon className="material-icons" style={{ 'cursor': 'pointer' }} hoverColor={"#f44336"} onClick={() => this.handleEdit(entry)}>edit</FontIcon>
+                    <TableRowColumn style={{ width: '250px' }} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableRowColumn>
+                    <TableHeaderColumn style={{ width: '60px' }}>
+                      <FontIcon className="material-icons" style={{ cursor: 'pointer' }} hoverColor="#f44336" onClick={() => this.handleEdit(entry)}>edit</FontIcon>
                     </TableHeaderColumn>
                   </TableRow>
-                )
+                );
               })
             }
           </TableBody>
         </Table>
-        <EditDialog tableEntry={this.state.tableEntry} users={this.props.users} open={this.state.open} onDone={this.onDone.bind(this)} update={true} />
+        <EditDialog tableEntry={this.state.tableEntry} users={this.props.users} open={this.state.open} onDone={this.onDone.bind(this)} update />
       </div>
-    )
+    );
   }
 }
 
-module.exports = MirumTable
+module.exports = MirumTable;

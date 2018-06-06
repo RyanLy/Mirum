@@ -1,12 +1,13 @@
-import React from 'react'
-import { Link, browserHistory } from 'react-router'
+import React from 'react';
+import { browserHistory } from 'react-router';
 
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
-import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
-import { provider, auth } from './../client';
+import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
+
+import { provider, auth } from './../client';
 
 class Index extends React.Component {
   constructor(props) {
@@ -16,9 +17,10 @@ class Index extends React.Component {
 
   componentWillMount() {
     auth()
-      .onAuthStateChanged(user => {
+      .onAuthStateChanged((user) => {
+        console.log(user);
         if (user) {
-          this.setState({ user })
+          this.setState({ user });
         }
       });
   }
@@ -26,8 +28,8 @@ class Index extends React.Component {
   login() {
     auth()
       .signInWithPopup(provider)
-      .then(result => {
-        this.setState({user: result.user});
+      .then((result) => {
+        this.setState({ user: result.user });
       });
   }
 
@@ -35,21 +37,21 @@ class Index extends React.Component {
     auth()
       .signOut()
       .then(() => {
-        this.setState({user: null});
+        this.setState({ user: null });
       });
   }
 
-  handleToggle() { this.setState({open: !this.state.open}) }
+  handleToggle() { this.setState({ open: !this.state.open }); }
 
-  handleClose() { this.setState({open: false}) }
+  handleClose() { this.setState({ open: false }); }
 
   renderLoginButton() {
     return (
       this.state.user
-      ?
-      <FlatButton label="Logout" onClick={this.logout.bind(this)} />
-      :
-      <FlatButton label="Login With Facebook" onClick={this.login.bind(this)} icon={<FontIcon className="material-icons">people</FontIcon>} />
+        ?
+          <FlatButton label="Logout" onClick={this.logout.bind(this)} />
+        :
+          <FlatButton label="Login With Facebook" onClick={this.login.bind(this)} icon={<FontIcon className="material-icons">people</FontIcon>} />
     );
   }
 
@@ -64,43 +66,58 @@ class Index extends React.Component {
     const imgStyle = {
       height: 100,
       width: 100,
-      borderRadius: '50%'
-    }
+      borderRadius: '50%',
+    };
     const textAlign = {
-      textAlign: 'center'
-    }
+      textAlign: 'center',
+    };
     return (
       this.state.user
-      ?
-      <div>
-        <div style={textAlign}>
-          <Paper zDepth={2} circle={true} style={style} children={<img style={imgStyle} src={this.state.user.photoURL} />} />
+        ?
           <div>
-            {`${this.state.user.displayName}`}
+            <div style={textAlign}>
+              <Paper zDepth={2} circle style={style}>
+                <img style={imgStyle} src={this.state.user.photoURL} />
+              </Paper>
+              <div>
+                {`${this.state.user.displayName}`}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      :
-      'You are not logged in'
+        :
+        'You are not logged in'
     );
   }
   render() {
     return (
       <div>
-        <AppBar style={{top: 0, position: 'fixed', backgroundColor: '#3b5998'}}
-                title={<span style={ {cursor: 'pointer'}}
-                onClick={() => browserHistory.push('/')}>Mirum</span>}
-                onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
-                iconElementRight={this.renderLoginButton()} />
-        <Drawer docked={false} overlayClassName='drawer__overlay' containerClassName='drawer__container' open={this.state.open} onRequestChange={(open) => this.setState({open})}>
+        <AppBar
+          style={{ top: 0, position: 'fixed', backgroundColor: '#3b5998' }}
+          title={
+            <span
+              style={{ cursor: 'pointer' }}
+              onClick={() => browserHistory.push('/')}
+            >
+              Mirum
+            </span>}
+          onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
+          iconElementRight={this.renderLoginButton()}
+        />
+        <Drawer
+          docked={false}
+          overlayClassName="drawer__overlay"
+          containerClassName="drawer__container"
+          open={this.state.open}
+          onRequestChange={open => this.setState({ open })}
+        >
           {this.renderUserInfo()}
         </Drawer>
         <div className="margin-top-app-bar">
           { this.props.children }
         </div>
       </div>
-    )
+    );
   }
 }
 
-module.exports = Index
+module.exports = Index;
