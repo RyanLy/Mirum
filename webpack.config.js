@@ -2,6 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+const environment = process.env.NODE_ENV === 'production'
+  ? require('./config/production')
+  : require('./config/development');
+
 const webpackConfig = {
   cache: true,
   debug: true,
@@ -41,6 +45,10 @@ const webpackConfig = {
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
       },
+      ENVIRONMENT: Object.keys(environment).reduce((o, k) => {
+        o[k] = JSON.stringify(environment[k]);
+        return o;
+      }, {}),
     }),
   ],
 };
