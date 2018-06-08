@@ -48,7 +48,7 @@ class MirumTable extends React.Component {
                 entry.key = key;
                 return (
                   <TableRow>
-                    <TableRowColumn style={{ width: '120px', textOverflow: 'clip' }}>{this.props.users[entry.user_id]}</TableRowColumn>
+                    <TableRowColumn style={{ width: '120px', textOverflow: 'clip' }}>{this.props.users[entry.user_id].name}</TableRowColumn>
                     <TableRowColumn style={{ width: '60px' }}>{entry.points}</TableRowColumn>
                     <TableRowColumn title={entry.reason}>{entry.reason}</TableRowColumn>
                     <TableRowColumn style={{ width: '250px' }} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableRowColumn>

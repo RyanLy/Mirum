@@ -92,7 +92,7 @@ class EditDialog extends React.Component {
             onChange={this.handleChangeSelected.bind(this)}
           >
             {
-              Object.keys(this.props.users).map(userId => <MenuItem value={userId} primaryText={this.props.users[userId]} />)
+              Object.keys(this.props.users).map(userId => <MenuItem value={userId} primaryText={this.props.users[userId].name} />)
             }
           </SelectField>
         </div>

@@ -23,9 +23,8 @@ class Main extends React.Component {
 
           database.ref('/users').once('value').then((snapshot) => {
             const users = snapshot.val();
-            // Default to the first key in selected
             if (users) {
-              this.setState({ users, selected: Object.keys(users)[0] });
+              this.setState({ users });
             }
           });
 
@@ -81,7 +80,7 @@ class Main extends React.Component {
         </div>
         {
           everyoneElse.map((userId) => {
-            const label = `${this.state.users[userId]}'s Score`;
+            const label = `${this.state.users[userId].name}'s Score`;
             return (
               <div className="col-md-3">
                 <Card style={cardStyle}>
