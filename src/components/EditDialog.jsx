@@ -1,16 +1,25 @@
 import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import MenuItem from 'material-ui/MenuItem';
+// import Dialog from 'material-ui/Dialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+// import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
+// import TextField from 'material-ui/TextField';
+// import SelectField from 'material-ui/SelectField';
 import { database, FIREBASE_SERVER_TIMESTAMP } from './../client';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 class EditDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      key: null, user_id: Object.keys(this.props.users)[0], points: 1, reason: '', update: false,
+      key: null, user_id: Object.keys(this.props.users)[0], points: 1, reason: '',
     };
   }
 
@@ -20,15 +29,15 @@ class EditDialog extends React.Component {
     }
   }
 
-  handleChangeSelected(event, index, user_id) {
-    this.setState({ user_id });
+  handleChangeSelected = (e) => {
+    this.setState({ user_id: e.target.value });
   }
 
-  handleChangePoints(event, index, points) {
-    this.setState({ points });
+  handleChangePoints = (e) => {
+    this.setState({ points: e.target.value });
   }
 
-  handleReasonChange(e) {
+  handleReasonChange = (e) => {
     this.setState({
       reason: e.target.value,
     });
@@ -36,19 +45,71 @@ class EditDialog extends React.Component {
 
   render() {
     const POSSIBLE_POINT_VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const actions = [
-      <FlatButton
-        label="Cancel"
-        primary
-        onTouchTap={this.props.onDone}
-      />,
-      // TODO: Move the server call out to a parent component
-      <FlatButton
-        label={this.props.update ? 'Update' : 'Submit'}
-        primary
-        keyboardFocused
-        onTouchTap={
-          () => {
+
+    return (
+      <Dialog
+          // onClose={this.handleClose}
+          // actions={actions}
+        open={this.props.open}
+        onClose={this.props.onDone}
+        fullWidth
+      >
+        <DialogTitle>
+          <Typography variant="title">
+            {this.props.update ? 'Update entry' : 'Add new points entry'}
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            select
+            fullWidth
+            label="Person"
+            value={this.state.user_id}
+            onChange={this.handleChangeSelected}
+            margin="normal"
+            style={{ display: 'block', marginBottom: 10 }}
+          >
+            {
+                Object.keys(this.props.users).map(userId => <MenuItem value={userId}>{this.props.users[userId].name}</MenuItem>)
+              }
+          </TextField>
+          <TextField
+            select
+            fullWidth
+            label="Points"
+            value={this.state.points}
+            onChange={this.handleChangePoints}
+            margin="normal"
+            style={{ display: 'block', marginBottom: 10 }}
+          >
+            {POSSIBLE_POINT_VALUES.map(point => (
+              <MenuItem value={point}>
+                {point}
+              </MenuItem>
+              ))}
+          </TextField>
+          <TextField
+            label="Reason"
+            placeholder="They're awesome!"
+            multiline
+            fullWidth
+            rows={1}
+            rowsMax={10}
+            floatingLabelFixed
+            value={this.state.reason}
+            InputLabelProps={{
+                shrink: true,
+              }}
+            onChange={this.handleReasonChange}
+
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.props.onDone} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
             if (this.props.update) {
               const updates = {};
               updates[`table/${this.state.key}`] = {
@@ -72,50 +133,12 @@ class EditDialog extends React.Component {
                 this.props.onDone();
               });
             }
-          }
-        }
-      />,
-    ];
-
-    return (
-      <Dialog
-        title={this.props.update ? 'Update entry' : 'Add new points entry'}
-        actions={actions}
-        modal={false}
-        open={this.props.open}
-        onRequestClose={this.props.onDone}
-      >
-        <div>
-          <SelectField
-            value={this.state.user_id}
-            floatingLabelText="Person"
-            onChange={this.handleChangeSelected.bind(this)}
+          }}
+            color="primary"
           >
-            {
-              Object.keys(this.props.users).map(userId => <MenuItem value={userId} primaryText={this.props.users[userId].name} />)
-            }
-          </SelectField>
-        </div>
-        <div>
-          <SelectField value={this.state.points} floatingLabelText="Points" onChange={this.handleChangePoints.bind(this)}>
-            {
-              POSSIBLE_POINT_VALUES.map(point => <MenuItem value={point} primaryText={point} />)
-            }
-          </SelectField>
-        </div>
-        <div>
-          <TextField
-            floatingLabelText="Reason"
-            hintText="They're awesome!"
-            multiLine
-            fullWidth
-            rows={1}
-            rowsMax={10}
-            floatingLabelFixed
-            value={this.state.reason}
-            onChange={this.handleReasonChange.bind(this)}
-          />
-        </div>
+            {this.props.update ? 'Update' : 'Submit'}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

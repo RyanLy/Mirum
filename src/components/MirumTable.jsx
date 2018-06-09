@@ -1,8 +1,13 @@
 import React from 'react';
 import moment from 'moment';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn }
-  from 'material-ui/Table';
-import FontIcon from 'material-ui/FontIcon';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 
 import EditDialog from './EditDialog.jsx';
 
@@ -17,51 +22,60 @@ class MirumTable extends React.Component {
     };
   }
 
-  handleEdit(entry) {
-    this.setState({ open: true, tableEntry: { ...entry } });
+  onDone = () => {
+    this.setState({ open: false });
   }
 
-  onDone() {
-    this.setState({ open: false });
+  handleEdit = (entry) => {
+    this.setState({ open: true, tableEntry: { ...entry } });
   }
 
   render() {
     return (
       <div>
         <Table>
-          <TableHeader
-            displaySelectAll={false}
-            adjustForCheckbox={false}
-          >
+          <TableHead >
             <TableRow>
-              <TableHeaderColumn style={{ width: '120px' }}>Person</TableHeaderColumn>
-              <TableHeaderColumn style={{ width: '60px' }}>Points</TableHeaderColumn>
-              <TableHeaderColumn>Reason</TableHeaderColumn>
-              <TableHeaderColumn style={{ width: '250px' }} className="hidden-xs">Date</TableHeaderColumn>
-              <TableHeaderColumn style={{ width: '60px' }} />
+              <TableCell padding="none" style={{ padding: '0 10px' }} >Person</TableCell>
+              <TableCell padding="none" style={{ padding: '0 10px' }} >Points</TableCell>
+              <TableCell padding="none" style={{ padding: '0 10px' }}>Reason</TableCell>
+              <TableCell padding="none" style={{ padding: '0 10px' }} className="hidden-xs">Date</TableCell>
+              <TableCell padding="none" style={{ padding: '0 10px' }} />
             </TableRow>
-          </TableHeader>
+          </TableHead>
           <TableBody displayRowCheckbox={false}>
             {
               Object.keys(this.props.tableEntries).reverse().map((key) => {
                 const entry = this.props.tableEntries[key];
                 entry.key = key;
                 return (
-                  <TableRow>
-                    <TableRowColumn style={{ width: '120px', textOverflow: 'clip' }}>{this.props.users[entry.user_id].name}</TableRowColumn>
-                    <TableRowColumn style={{ width: '60px' }}>{entry.points}</TableRowColumn>
-                    <TableRowColumn title={entry.reason}>{entry.reason}</TableRowColumn>
-                    <TableRowColumn style={{ width: '250px' }} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableRowColumn>
-                    <TableHeaderColumn style={{ width: '60px' }}>
-                      <FontIcon className="material-icons" style={{ cursor: 'pointer' }} hoverColor="#f44336" onClick={() => this.handleEdit(entry)}>edit</FontIcon>
-                    </TableHeaderColumn>
+                  <TableRow hover>
+                    <TableCell padding="none" style={{ padding: '0 10px' }}>{this.props.users[entry.user_id].name}</TableCell>
+                    <TableCell padding="none" style={{ padding: '0 10px' }}>{entry.points}</TableCell>
+                    <TableCell padding="none" style={{ padding: '0 10px' }} title={entry.reason}>{entry.reason}</TableCell>
+                    <TableCell padding="none" style={{ padding: '0 10px' }} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
+                    <TableCell padding="none" style={{ padding: '0 10px' }} >
+                      <IconButton
+                        color="inherit"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => this.handleEdit(entry)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 );
               })
             }
           </TableBody>
         </Table>
-        <EditDialog tableEntry={this.state.tableEntry} users={this.props.users} open={this.state.open} onDone={this.onDone.bind(this)} update />
+        <EditDialog
+          tableEntry={this.state.tableEntry}
+          users={this.props.users}
+          open={this.state.open}
+          onDone={this.onDone}
+          update
+        />
       </div>
     );
   }

@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 
 // import AppBar from 'material-ui/AppBar';
 // import Drawer from 'material-ui/Drawer';
-import Paper from 'material-ui/Paper';
+// import Paper from 'material-ui/Paper';
 
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -58,11 +58,11 @@ class Index extends React.Component {
   renderLoginButton() {
     return (
       this.state.user
-        ? <Button color="inherit" style={{ fontSize: 14 }} onClick={this.logout}>Logout</Button>
+        ? <Button color="inherit" onClick={this.logout}>Logout</Button>
         : (
           <span>
 
-            <Button color="inherit" style={{ fontSize: 14 }} onClick={this.login}>
+            <Button color="inherit" onClick={this.login}>
               <PeopleIcon style={{ marginRight: 10 }} />
               Login With Facebook
             </Button>
@@ -73,28 +73,23 @@ class Index extends React.Component {
 
   renderUserInfo() {
     const style = {
+      margin: 20,
       height: 100,
       width: 100,
-      margin: 20,
       textAlign: 'center',
       display: 'inline-block',
-    };
-    const imgStyle = {
-      height: 100,
-      width: 100,
       borderRadius: '50%',
     };
     const textAlign = {
       textAlign: 'center',
     };
+
     return (
       this.state.user
         ?
           <div style={{ width: 250 }}>
             <div style={textAlign}>
-              <Paper zDepth={2} circle style={style}>
-                <img style={imgStyle} src={`${this.state.user.providerData[0].photoURL}?height=500`} />
-              </Paper>
+              <img alt="profile" style={style} src={`${this.state.user.providerData[0].photoURL}?height=500`} />
               <div>
                 {`${this.state.user.displayName}`}
               </div>
@@ -110,6 +105,7 @@ class Index extends React.Component {
       <div>
         <SwipeableDrawer
           open={this.state.open}
+          onOpen={this.handleDrawerOpen}
           onClose={this.handleDrawerClose}
           onKeyDown={this.handleDrawerClose}
         >
@@ -125,7 +121,7 @@ class Index extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography
-              variant="display1"
+              variant="headline"
               color="inherit"
               style={{ flex: 1 }}
               noWrap

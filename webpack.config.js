@@ -43,10 +43,10 @@ const webpackConfig = {
     new ExtractTextPlugin('build.min.css'),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify('production'),
+        NODE_ENV: process.env.NODE_ENV === 'production' ? JSON.stringify('production') : JSON.stringify('development'),
       },
       ENVIRONMENT: Object.keys(environment).reduce((o, k) => {
-        o[k] = JSON.stringify(environment[k]);
+        o[k] = JSON.stringify(environment[k]); // eslint-disable-line no-param-reassign
         return o;
       }, {}),
     }),

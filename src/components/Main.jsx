@@ -1,10 +1,12 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import FontIcon from 'material-ui/FontIcon';
-import { Card, CardTitle } from 'material-ui/Card';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
 
-import MirumTable from './MirumTable.jsx';
 import { auth, database } from './../client';
+import MirumTable from './MirumTable.jsx';
 import EditDialog from './EditDialog.jsx';
 
 class Main extends React.Component {
@@ -28,10 +30,6 @@ class Main extends React.Component {
             }
           });
 
-          database.ref(`/profile/${user.uid}`).once('value').then((snapshot) => {
-            console.log(snapshot.val());
-          });
-
           database.ref('table').on('value', (snapshot) => {
             const tableEntries = snapshot.val();
             if (tableEntries) {
@@ -44,11 +42,11 @@ class Main extends React.Component {
       });
   }
 
-  handleOpen() {
+  handleOpen = () => {
     this.setState({ open: true, tableEntry: { user_id: Object.keys(this.state.users)[0], points: 1, reason: '' } });
   }
 
-  handleClose() {
+  handleClose = () => {
     this.setState({ open: false });
   }
 
@@ -79,7 +77,14 @@ class Main extends React.Component {
       <div className="row" style={analyticsStyle}>
         <div className="col-md-3">
           <Card style={cardStyle}>
-            <CardTitle title="My Score" subtitle={totalScore[currentUID]} subtitleColor="green" />
+            <CardContent>
+              <Typography variant="headline" style={{ color: 'initial' }}>
+                My Score
+              </Typography>
+              <Typography variant="subheading" style={{ color: 'green' }}>
+                {totalScore[currentUID]}
+              </Typography>
+            </CardContent>
           </Card>
         </div>
         {
@@ -88,7 +93,14 @@ class Main extends React.Component {
             return (
               <div className="col-md-3">
                 <Card style={cardStyle}>
-                  <CardTitle title={label} subtitle={totalScore[userId]} subtitleColor="black" />
+                  <CardContent>
+                    <Typography variant="headline" style={{ color: 'initial' }}>
+                      {label}
+                    </Typography>
+                    <Typography variant="subheading">
+                      {totalScore[userId]}
+                    </Typography>
+                  </CardContent>
                 </Card>
               </div>
             );
@@ -104,18 +116,22 @@ class Main extends React.Component {
         {this.renderAnalytics()}
         <div className="row">
           <div className="col-md-12">
-            <RaisedButton
-              label="Add points entry"
+            <Button
+              variant="contained"
               className="pull-right"
-              onTouchTap={this.handleOpen.bind(this)}
-              backgroundColor="#dcdcdc"
-              icon={<FontIcon className="material-icons">add</FontIcon>}
-            />
+              onClick={this.handleOpen}
+              style={{ backgroundColor: '#dcdcdc' }}
+            >
+              <AddIcon />
+              <Typography variant="button">
+                Add points
+              </Typography>
+            </Button>
             <EditDialog
               tableEntry={this.state.tableEntry}
               users={this.state.users}
               open={this.state.open}
-              onDone={this.handleClose.bind(this)}
+              onDone={this.handleClose}
               update={false}
             />
           </div>
@@ -126,7 +142,7 @@ class Main extends React.Component {
   }
 
   renderUnauthorizedContent() {
-    return (<span>You must be logged in/authorized to see this</span>);
+    return <span>You must be logged in/authorized to see this</span>;
   }
 
   renderContent() {
