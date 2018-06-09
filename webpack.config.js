@@ -22,7 +22,7 @@ const webpackConfig = {
     loaders: [
       {
         test: /.jsx?$/,
-        loaders: ['react-hot', 'babel-loader?presets[]=es2015,presets[]=react'],
+        loaders: ['react-hot-loader/webpack', 'babel-loader?presets[]=es2015,presets[]=react,presets[]=stage-0'],
         exclude: /node_modules/,
       },
       {

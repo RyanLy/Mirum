@@ -28,6 +28,10 @@ class Main extends React.Component {
             }
           });
 
+          database.ref(`/profile/${user.uid}`).once('value').then((snapshot) => {
+            console.log(snapshot.val());
+          });
+
           database.ref('table').on('value', (snapshot) => {
             const tableEntries = snapshot.val();
             if (tableEntries) {

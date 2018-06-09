@@ -1,11 +1,18 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 
-import AppBar from 'material-ui/AppBar';
-import Drawer from 'material-ui/Drawer';
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
+// import AppBar from 'material-ui/AppBar';
+// import Drawer from 'material-ui/Drawer';
 import Paper from 'material-ui/Paper';
+
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import PeopleIcon from '@material-ui/icons/People';
+import Button from '@material-ui/core/Button';
 
 import { provider, auth } from './../client';
 
@@ -24,7 +31,7 @@ class Index extends React.Component {
       });
   }
 
-  login() {
+  login = () => {
     auth()
       .signInWithPopup(provider)
       .then((result) => {
@@ -32,7 +39,7 @@ class Index extends React.Component {
       });
   }
 
-  logout() {
+  logout = () => {
     auth()
       .signOut()
       .then(() => {
@@ -40,17 +47,27 @@ class Index extends React.Component {
       });
   }
 
-  handleToggle() { this.setState({ open: !this.state.open }); }
+  handleDrawerOpen = () => {
+    this.setState({ open: true });
+  }
 
-  handleClose() { this.setState({ open: false }); }
+  handleDrawerClose = () => {
+    this.setState({ open: false });
+  }
 
   renderLoginButton() {
     return (
       this.state.user
-        ?
-          <FlatButton label="Logout" onClick={this.logout.bind(this)} />
-        :
-          <FlatButton label="Login With Facebook" onClick={this.login.bind(this)} icon={<FontIcon className="material-icons">people</FontIcon>} />
+        ? <Button color="inherit" style={{ fontSize: 14 }} onClick={this.logout}>Logout</Button>
+        : (
+          <span>
+
+            <Button color="inherit" style={{ fontSize: 14 }} onClick={this.login}>
+              <PeopleIcon style={{ marginRight: 10 }} />
+              Login With Facebook
+            </Button>
+          </span>
+        )
     );
   }
 
@@ -73,7 +90,7 @@ class Index extends React.Component {
     return (
       this.state.user
         ?
-          <div>
+          <div style={{ width: 250 }}>
             <div style={textAlign}>
               <Paper zDepth={2} circle style={style}>
                 <img style={imgStyle} src={`${this.state.user.providerData[0].photoURL}?height=500`} />
@@ -87,30 +104,39 @@ class Index extends React.Component {
         'You are not logged in'
     );
   }
+
   render() {
     return (
       <div>
-        <AppBar
-          style={{ top: 0, position: 'fixed', backgroundColor: '#3b5998' }}
-          title={
-            <span
-              style={{ cursor: 'pointer' }}
-              onClick={() => browserHistory.push('/')}
-            >
-              Mirum
-            </span>}
-          onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
-          iconElementRight={this.renderLoginButton()}
-        />
-        <Drawer
-          docked={false}
-          overlayClassName="drawer__overlay"
-          containerClassName="drawer__container"
+        <SwipeableDrawer
           open={this.state.open}
-          onRequestChange={open => this.setState({ open })}
+          onClose={this.handleDrawerClose}
+          onKeyDown={this.handleDrawerClose}
         >
           {this.renderUserInfo()}
-        </Drawer>
+        </SwipeableDrawer>
+
+        <AppBar style={{ backgroundColor: '#3b5998' }}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              onClick={this.handleDrawerOpen}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="display1"
+              color="inherit"
+              style={{ flex: 1 }}
+              noWrap
+            >
+              <span style={{ cursor: 'pointer' }} onClick={() => browserHistory.push('/')}>
+                Mirum
+              </span>
+            </Typography>
+            {this.renderLoginButton()}
+          </Toolbar>
+        </AppBar>
         <div className="margin-top-app-bar">
           { this.props.children }
         </div>
