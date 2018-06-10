@@ -102,6 +102,7 @@ class Index extends React.Component {
   }
 
   render() {
+    const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
     return (
       <div>
         <SwipeableDrawer
@@ -109,6 +110,7 @@ class Index extends React.Component {
           onOpen={this.handleDrawerOpen}
           onClose={this.handleDrawerClose}
           onKeyDown={this.handleDrawerClose}
+          disableDiscovery={iOS}
         >
           {this.renderUserInfo()}
         </SwipeableDrawer>
