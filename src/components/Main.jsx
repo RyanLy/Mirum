@@ -23,7 +23,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false, user: null, users: [], tableEntries: [], questions: [], tabNum: 0,
+      open: false, user: null, users: {}, tableEntries: {}, questions: {}, answers: {}, tabNum: 0,
     };
   }
 
@@ -33,7 +33,7 @@ class Main extends React.Component {
         if (user) {
           this.setState({ user });
 
-          database.ref('/users').once('value').then((snapshot) => {
+          database.ref('users').on('value', (snapshot) => {
             const users = snapshot.val();
             if (users) {
               this.setState({ users });
@@ -49,9 +49,15 @@ class Main extends React.Component {
 
           database.ref('question').on('value', (snapshot) => {
             const questions = snapshot.val();
-            console.log(questions);
             if (questions) {
               this.setState({ questions });
+            }
+          });
+
+          database.ref('answers').on('value', (snapshot) => {
+            const answers = snapshot.val();
+            if (answers) {
+              this.setState({ answers });
             }
           });
         } else {
@@ -184,7 +190,7 @@ class Main extends React.Component {
   }
 
   renderQuestions() {
-    return <QuestionsTable users={this.state.users} questions={this.state.questions} />;
+    return <QuestionsTable currentUserID={this.state.user.uid} users={this.state.users} questions={this.state.questions} answers={this.state.answers} />;
   }
 
   render() {
