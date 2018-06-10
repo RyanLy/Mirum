@@ -43,9 +43,7 @@ const webpackConfig = {
     new webpack.NamedModulesPlugin(),
     new ExtractTextPlugin('build.min.css'),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV === 'production' ? 'production' : 'development'),
-      },
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV === 'production' ? 'production' : 'development'),
       ENVIRONMENT: Object.keys(environment).reduce((o, k) => {
         o[k] = JSON.stringify(environment[k]); // eslint-disable-line no-param-reassign
         return o;
@@ -61,7 +59,11 @@ if (process.env.NODE_ENV !== 'production') {
   );
   webpackConfig.devtool = 'eval-source-map';
 } else {
-  webpackConfig.plugins.unshift(new webpack.optimize.UglifyJsPlugin({
+  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    sourceMap: true, // enable source maps to map errors (stack traces) to modules
+    output: {
+      comments: false, // remove all comments
+    },
     compress: { warnings: false },
   }));
 }
