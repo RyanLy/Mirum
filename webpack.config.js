@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const environment = process.env.NODE_ENV === 'production'
   ? require('./config/production')
@@ -39,7 +40,6 @@ const webpackConfig = {
     ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new ExtractTextPlugin('build.min.css'),
     new webpack.DefinePlugin({
@@ -53,6 +53,7 @@ const webpackConfig = {
 };
 
 if (process.env.NODE_ENV !== 'production') {
+  webpackConfig.plugins.unshift(new webpack.HotModuleReplacementPlugin());
   webpackConfig.entry.unshift(
     'webpack/hot/dev-server',
     'webpack-dev-server/client?http://localhost:8080/',
@@ -66,6 +67,7 @@ if (process.env.NODE_ENV !== 'production') {
     },
     compress: { warnings: false },
   }));
+  webpackConfig.plugins.push(new CompressionPlugin());
 }
 
 module.exports = webpackConfig;
