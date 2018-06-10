@@ -7,13 +7,23 @@ import CardContent from '@material-ui/core/CardContent';
 
 import { auth, database } from './../client';
 import MirumTable from './MirumTable.jsx';
+import QuestionsTable from './QuestionsTable.jsx';
 import EditDialog from './EditDialog.jsx';
+
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import StarsIcon from '@material-ui/icons/Stars';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+
+function renderUnauthorizedContent() {
+  return <span>You must be logged in/authorized to see this.</span>;
+}
 
 class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false, user: null, users: [], tableEntries: [],
+      open: false, user: null, users: [], tableEntries: [], questions: [], tabNum: 0,
     };
   }
 
@@ -36,6 +46,14 @@ class Main extends React.Component {
               this.setState({ tableEntries });
             }
           });
+
+          database.ref('question').on('value', (snapshot) => {
+            const questions = snapshot.val();
+            console.log(questions);
+            if (questions) {
+              this.setState({ questions });
+            }
+          });
         } else {
           this.setState({ user: null });
         }
@@ -48,6 +66,10 @@ class Main extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
+  }
+
+  handleTabChange = (_, value) => {
+    this.setState({ tabNum: value });
   }
 
   renderAnalytics() {
@@ -112,6 +134,28 @@ class Main extends React.Component {
 
   renderAuthorizedContent() {
     return (
+      <div>
+        <Tabs
+          value={this.state.tabNum}
+          onChange={this.handleTabChange}
+          indicatorColor="primary"
+          textColor="primary"
+          style={{ marginBottom: 20, borderBottom: '1px solid #e8e8e8' }}
+        >
+          <Tab label="Points" icon={<StarsIcon />} />
+          <Tab label="Questions"icon={<QuestionAnswerIcon />} />
+        </Tabs>
+        {
+        this.state.tabNum === 0
+          ? this.renderPoints()
+          : this.renderQuestions()
+      }
+      </div>
+    );
+  }
+
+  renderPoints() {
+    return (
       <span>
         {this.renderAnalytics()}
         <div className="row">
@@ -139,18 +183,8 @@ class Main extends React.Component {
     );
   }
 
-  renderUnauthorizedContent() {
-    return <span>You must be logged in/authorized to see this</span>;
-  }
-
-  renderContent() {
-    return (
-      this.state.user
-        ?
-        this.renderAuthorizedContent()
-        :
-        this.renderUnauthorizedContent()
-    );
+  renderQuestions() {
+    return <QuestionsTable users={this.state.users} questions={this.state.questions} />;
   }
 
   render() {
@@ -160,7 +194,14 @@ class Main extends React.Component {
 
     return (
       <div className="container" style={paddingTop}>
-        {this.renderContent()}
+        {
+        this.state.user
+        ?
+        this.renderAuthorizedContent()
+        :
+        renderUnauthorizedContent()
+      }
+
       </div>
     );
   }

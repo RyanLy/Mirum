@@ -97,7 +97,12 @@ class Index extends React.Component {
             </div>
           </div>
         :
-        'You are not logged in'
+          <Typography
+            variant="title"
+            style={{ padding: 20 }}
+          >
+            You are not logged in!
+          </Typography>
     );
   }
 
