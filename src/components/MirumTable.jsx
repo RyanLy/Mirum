@@ -43,7 +43,7 @@ class MirumTable extends React.Component {
               <TableCell padding="none" style={{ padding: '0 10px' }} />
             </TableRow>
           </TableHead>
-          <TableBody displayRowCheckbox={false}>
+          <TableBody>
             {
               Object.keys(this.props.tableEntries).reverse().map((key) => {
                 const entry = this.props.tableEntries[key];
@@ -56,7 +56,6 @@ class MirumTable extends React.Component {
                     <TableCell padding="none" style={{ padding: '0 10px' }} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
                     <TableCell padding="none" style={{ padding: '0 10px' }} >
                       <IconButton
-                        color="inherit"
                         style={{ cursor: 'pointer' }}
                         onClick={() => this.handleEdit(entry)}
                       >

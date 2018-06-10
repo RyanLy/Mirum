@@ -22,7 +22,7 @@ const webpackConfig = {
     loaders: [
       {
         test: /.jsx?$/,
-        loaders: ['react-hot-loader/webpack', 'babel-loader?presets[]=es2015,presets[]=react,presets[]=stage-0'],
+        loaders: ['babel-loader?presets[]=es2015,presets[]=react,presets[]=stage-0'],
         exclude: /node_modules/,
       },
       {
@@ -40,10 +40,11 @@ const webpackConfig = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
     new ExtractTextPlugin('build.min.css'),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: process.env.NODE_ENV === 'production' ? JSON.stringify('production') : JSON.stringify('development'),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV === 'production' ? 'production' : 'development'),
       },
       ENVIRONMENT: Object.keys(environment).reduce((o, k) => {
         o[k] = JSON.stringify(environment[k]); // eslint-disable-line no-param-reassign

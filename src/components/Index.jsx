@@ -90,9 +90,12 @@ class Index extends React.Component {
           <div style={{ width: 250 }}>
             <div style={textAlign}>
               <img alt="profile" style={style} src={`${this.state.user.providerData[0].photoURL}?height=500`} />
-              <div>
+              <Typography
+                variant="title"
+              >
                 {`${this.state.user.displayName}`}
-              </div>
+              </Typography>
+              <div />
             </div>
           </div>
         :

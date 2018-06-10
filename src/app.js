@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { hot } from 'react-hot-loader';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import {
   MuiThemeProvider,
@@ -14,19 +15,22 @@ require('./../styles/app.scss');
 
 const theme = createMuiTheme({
   typography: {
-    fontSize: 20,
+    fontSize: 22,
   },
 });
 
-ReactDOM.render(
-  (
-    <MuiThemeProvider theme={theme}>
-      <Router history={browserHistory}>
-        <Route path="/" component={Index}>
-          <IndexRoute component={Main} />
-          <Route path="*" component={Error} />
-        </Route>
-      </Router>
-    </MuiThemeProvider>
-  ), document.getElementById('root'),
-);
+const App = (() =>
+  ReactDOM.render(
+    (
+      <MuiThemeProvider theme={theme}>
+        <Router history={browserHistory}>
+          <Route path="/" component={Index}>
+            <IndexRoute component={Main} />
+            <Route path="*" component={Error} />
+          </Route>
+        </Router>
+      </MuiThemeProvider>
+    ), document.getElementById('root'),
+  ))();
+
+export default hot(module)(App);
