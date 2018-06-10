@@ -1,10 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 
-// import AppBar from 'material-ui/AppBar';
-// import Drawer from 'material-ui/Drawer';
-// import Paper from 'material-ui/Paper';
-
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';

@@ -11,7 +11,7 @@ import Index from './components/Index.jsx';
 import Main from './components/Main.jsx';
 import Error from './components/Error.jsx';
 
-require('./../styles/app.scss');
+import './../styles/app.scss';
 
 const theme = createMuiTheme({
   typography: {
