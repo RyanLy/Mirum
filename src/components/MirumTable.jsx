@@ -31,16 +31,17 @@ class MirumTable extends React.Component {
   }
 
   render() {
+    const tenPxLRMargins = { padding: '0 10px' };
     return (
       <div>
         <Table>
-          <TableHead >
+          <TableHead>
             <TableRow>
-              <TableCell padding="none" style={{ padding: '0 10px' }} >Person</TableCell>
-              <TableCell padding="none" style={{ padding: '0 10px' }} >Points</TableCell>
-              <TableCell padding="none" style={{ padding: '0 10px' }}>Reason</TableCell>
-              <TableCell padding="none" style={{ padding: '0 10px' }} className="hidden-xs">Date</TableCell>
-              <TableCell padding="none" style={{ padding: '0 10px' }} />
+              <TableCell padding="none" style={tenPxLRMargins} >Person</TableCell>
+              <TableCell padding="none" style={tenPxLRMargins} >Points</TableCell>
+              <TableCell padding="none" style={tenPxLRMargins}>Reason</TableCell>
+              <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">Date</TableCell>
+              <TableCell padding="none" style={tenPxLRMargins} />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -50,11 +51,11 @@ class MirumTable extends React.Component {
                 entry.key = key;
                 return (
                   <TableRow hover>
-                    <TableCell padding="none" style={{ padding: '0 10px' }}>{this.props.users[entry.user_id].name}</TableCell>
-                    <TableCell padding="none" style={{ padding: '0 10px' }}>{entry.points}</TableCell>
-                    <TableCell padding="none" style={{ padding: '0 10px' }} title={entry.reason}>{entry.reason}</TableCell>
-                    <TableCell padding="none" style={{ padding: '0 10px' }} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
-                    <TableCell padding="none" style={{ padding: '0 10px' }} >
+                    <TableCell padding="none" style={tenPxLRMargins}>{this.props.users[entry.user_id].name}</TableCell>
+                    <TableCell padding="none" style={tenPxLRMargins}>{entry.points}</TableCell>
+                    <TableCell padding="none" style={tenPxLRMargins} title={entry.reason}>{entry.reason}</TableCell>
+                    <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
+                    <TableCell padding="none" style={tenPxLRMargins} >
                       <IconButton
                         style={{ cursor: 'pointer' }}
                         onClick={() => this.handleEdit(entry)}

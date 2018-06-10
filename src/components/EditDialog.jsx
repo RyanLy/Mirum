@@ -1,19 +1,14 @@
 import React from 'react';
-// import Dialog from 'material-ui/Dialog';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-// import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-// import TextField from 'material-ui/TextField';
-// import SelectField from 'material-ui/SelectField';
-import { database, FIREBASE_SERVER_TIMESTAMP } from './../client';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
+import { database, FIREBASE_SERVER_TIMESTAMP } from './../client';
 
 class EditDialog extends React.Component {
   constructor(props) {
@@ -48,15 +43,13 @@ class EditDialog extends React.Component {
 
     return (
       <Dialog
-          // onClose={this.handleClose}
-          // actions={actions}
         open={this.props.open}
         onClose={this.props.onDone}
         fullWidth
       >
         <DialogTitle>
-          <Typography variant="title">
-            {this.props.update ? 'Update entry' : 'Add new points entry'}
+          <Typography variant="title" component="span">
+            {this.props.update ? 'Update Entry' : 'Add New Point Entry'}
           </Typography>
         </DialogTitle>
         <DialogContent>
@@ -70,8 +63,8 @@ class EditDialog extends React.Component {
             style={{ display: 'block', marginBottom: 10 }}
           >
             {
-                Object.keys(this.props.users).map(userId => <MenuItem value={userId}>{this.props.users[userId].name}</MenuItem>)
-              }
+              Object.keys(this.props.users).map(userId => <MenuItem value={userId}>{this.props.users[userId].name}</MenuItem>)
+            }
           </TextField>
           <TextField
             select
@@ -95,7 +88,6 @@ class EditDialog extends React.Component {
             fullWidth
             rows={1}
             rowsMax={10}
-            floatingLabelFixed
             value={this.state.reason}
             InputLabelProps={{
                 shrink: true,

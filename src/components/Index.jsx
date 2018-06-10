@@ -58,24 +58,22 @@ class Index extends React.Component {
   renderLoginButton() {
     return (
       this.state.user
-        ? <Button color="inherit" onClick={this.logout}>Logout</Button>
-        : (
-          <span>
+        ?
+          <Button color="inherit" onClick={this.logout}>Logout</Button>
+        :
+          <Button color="inherit" onClick={this.login}>
+            <PeopleIcon style={{ marginRight: 10 }} />
+            Login With Facebook
+          </Button>
 
-            <Button color="inherit" onClick={this.login}>
-              <PeopleIcon style={{ marginRight: 10 }} />
-              Login With Facebook
-            </Button>
-          </span>
-        )
     );
   }
 
   renderUserInfo() {
     const style = {
       margin: 20,
-      height: 100,
-      width: 100,
+      height: 125,
+      width: 125,
       textAlign: 'center',
       display: 'inline-block',
       borderRadius: '50%',
@@ -115,7 +113,7 @@ class Index extends React.Component {
           {this.renderUserInfo()}
         </SwipeableDrawer>
 
-        <AppBar style={{ backgroundColor: '#3b5998' }}>
+        <AppBar>
           <Toolbar>
             <IconButton
               color="inherit"

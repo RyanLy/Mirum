@@ -52,12 +52,12 @@ class Main extends React.Component {
 
   renderAnalytics() {
     const analyticsStyle = {
-      marginBottom: '15px',
+      marginBottom: 15,
     };
 
     const cardStyle = {
-      width: '275px',
-      marginBottom: '10px',
+      width: '100%',
+      marginBottom: 10,
     };
 
     const currentUID = this.state.user.uid;
@@ -120,12 +120,10 @@ class Main extends React.Component {
               variant="contained"
               className="pull-right"
               onClick={this.handleOpen}
-              style={{ backgroundColor: '#dcdcdc' }}
+              color="secondary"
             >
               <AddIcon />
-              <Typography variant="button">
-                Add points
-              </Typography>
+              Add points
             </Button>
             <EditDialog
               tableEntry={this.state.tableEntry}

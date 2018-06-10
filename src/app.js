@@ -15,7 +15,22 @@ require('./../styles/app.scss');
 
 const theme = createMuiTheme({
   typography: {
-    fontSize: 22,
+    fontSize: 21,
+  },
+  palette: {
+    primary: {
+      // light: will be calculated from palette.primary.main,
+      main: '#3b5998',
+      // dark: will be calculated from palette.primary.main,
+      // contrastText: will be calculated to contast with palette.primary.main
+    },
+    secondary: {
+      main: '#ccc',
+      // dark: will be calculated from palette.secondary.main,
+    },
+    text: {
+      main: '#fff',
+    },
   },
 });
 
