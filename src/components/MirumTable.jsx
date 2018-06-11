@@ -6,6 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TablePagination from '@material-ui/core/TablePagination';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -17,8 +18,13 @@ class MirumTable extends React.Component {
     this.state = {
       open: false,
       tableEntry: {
-        key: null, user_id: Object.keys(this.props.users)[0], points: 1, reason: '',
+        key: null,
+        user_id: Object.keys(this.props.users)[0],
+        points: 1,
+        reason: '',
       },
+      rowsPerPage: 10,
+      page: 0,
     };
   }
 
@@ -30,8 +36,22 @@ class MirumTable extends React.Component {
     this.setState({ open: true, tableEntry: { ...entry } });
   }
 
+  handleChangePage = (event, page) => {
+    this.setState({ page });
+  };
+
+  handleChangeRowsPerPage = (event) => {
+    this.setState({ rowsPerPage: event.target.value });
+  };
+
   render() {
     const tenPxLRMargins = { padding: '0 10px' };
+    const { page, rowsPerPage } = this.state;
+    const data = Object.keys(this.props.tableEntries).reverse().map((key) => {
+      this.props.tableEntries[key].key = key;
+      return this.props.tableEntries[key];
+    });
+
     return (
       <div>
         <Table>
@@ -46,29 +66,33 @@ class MirumTable extends React.Component {
           </TableHead>
           <TableBody>
             {
-              Object.keys(this.props.tableEntries).reverse().map((key) => {
-                const entry = this.props.tableEntries[key];
-                entry.key = key;
-                return (
-                  <TableRow hover>
-                    <TableCell padding="none" style={tenPxLRMargins}>{this.props.users[entry.user_id].name}</TableCell>
-                    <TableCell padding="none" style={tenPxLRMargins}>{entry.points}</TableCell>
-                    <TableCell padding="none" style={tenPxLRMargins} title={entry.reason}>{entry.reason}</TableCell>
-                    <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
-                    <TableCell padding="none" style={tenPxLRMargins} >
-                      <IconButton
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => this.handleEdit(entry)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })
+              data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(entry => (
+                <TableRow hover>
+                  <TableCell padding="none" style={tenPxLRMargins}>{this.props.users[entry.user_id].name}</TableCell>
+                  <TableCell padding="none" style={tenPxLRMargins}>{entry.points}</TableCell>
+                  <TableCell padding="none" style={tenPxLRMargins} title={entry.reason}>{entry.reason}</TableCell>
+                  <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
+                  <TableCell padding="none" style={tenPxLRMargins} >
+                    <IconButton
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => this.handleEdit(entry)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
             }
           </TableBody>
         </Table>
+        <TablePagination
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={this.handleChangePage}
+          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+        />
         <EditDialog
           tableEntry={this.state.tableEntry}
           users={this.props.users}
