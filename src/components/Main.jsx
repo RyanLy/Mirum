@@ -8,6 +8,8 @@ import StarsIcon from '@material-ui/icons/Stars';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
+// This should be in the redux store
+import createHistory from 'history/createBrowserHistory';
 
 import { auth, database } from './../client';
 import MirumTable from './MirumTable.jsx';
@@ -18,11 +20,20 @@ function renderUnauthorizedContent() {
   return <span>You must be logged in/authorized to see this.</span>;
 }
 
+const TABS = {
+  POINTS: 0,
+  QUESTIONS: 1,
+};
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
+
+    const { tab } = this.props.location.query;
+    const tabNum = tab === 'questions' ? TABS.QUESTIONS : TABS.POINTS;
+
     this.state = {
-      open: false, user: null, users: {}, tableEntries: {}, questions: {}, answers: {}, tabNum: 0,
+      open: false, user: null, users: {}, tableEntries: {}, questions: {}, answers: {}, tabNum,
     };
   }
 
@@ -74,6 +85,16 @@ class Main extends React.Component {
   }
 
   handleTabChange = (_, value) => {
+    // Hack: Current using createHistory() for query parameter manipulation...
+    if (value === TABS.QUESTIONS) {
+      createHistory().push({
+        search: '?tab=questions',
+      });
+    } else {
+      createHistory().push({
+        search: '',
+      });
+    }
     this.setState({ tabNum: value });
   }
 
