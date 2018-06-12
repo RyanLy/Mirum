@@ -80,11 +80,8 @@ export default class QuestionsTable extends React.Component {
     const data = Object.keys(this.props.questions)
       .reverse()
       .map((key) => {
-        const question = this.props.questions[key];
-        if (question.question) {
-          this.props.questions[key].key = key;
-          return this.props.questions[key];
-        }
+        this.props.questions[key].key = key;
+        return this.props.questions[key];
       })
       .filter(question => question !== undefined);
 
@@ -95,7 +92,8 @@ export default class QuestionsTable extends React.Component {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="none" style={tenPxLRMargins} >Trivia Question</TableCell>
+              <TableCell padding="none" style={tenPxLRMargins}>Trivia Question</TableCell>
+              <TableCell padding="none" style={tenPxLRMargins}>Category</TableCell>
               <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">Date</TableCell>
               <TableCell padding="none" style={tenPxLRMarginsTextCenter}>Your Answer</TableCell>
               {
@@ -114,6 +112,7 @@ export default class QuestionsTable extends React.Component {
                 return (
                   <TableRow hover>
                     <TableCell padding="none" style={tenPxLRMargins}>{entry.question}</TableCell>
+                    <TableCell padding="none" style={tenPxLRMargins}>{entry.category}</TableCell>
                     <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
                     <TableCell padding="none" style={tenPxLRMarginsTextCenter}>
                       { (currentUserAnswer && normalizeAnswer(currentUserAnswer[entry.key])) === normalizeAnswer(entry.answer)
