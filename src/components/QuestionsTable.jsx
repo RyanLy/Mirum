@@ -15,11 +15,20 @@ import Typography from '@material-ui/core/Typography';
 
 import { database } from './../client';
 
+const ARTICLES = ['a', 'an', 'the'];
+
+
+// TODO FIX: Note that the answers are actually not hidden behind a backend
+//           and the answers appear in the same response as the questions...
 function normalizeAnswer(answer) {
   if (!answer) {
     return null;
   }
-  return answer.replace(/\s/g, '').toLowerCase();
+  return answer.toLowerCase()
+    .replace(/\(.*\)/, '')
+    .split(/\s/)
+    .filter(words => !ARTICLES.includes(words))
+    .join('');
 }
 
 export default class QuestionsTable extends React.Component {
@@ -109,13 +118,14 @@ export default class QuestionsTable extends React.Component {
               data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((entry) => {
                 const currentUserAnswer = this.props.answers[this.props.currentUserID];
                 const styleGreen = { color: 'green' };
+                const normalizedAnswer = normalizeAnswer(entry.answer);
                 return (
                   <TableRow hover>
                     <TableCell padding="none" style={tenPxLRMargins}>{entry.question}</TableCell>
                     <TableCell padding="none" style={tenPxLRMargins}>{entry.category}</TableCell>
                     <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
                     <TableCell padding="none" style={tenPxLRMarginsTextCenter}>
-                      { (currentUserAnswer && normalizeAnswer(currentUserAnswer[entry.key])) === normalizeAnswer(entry.answer)
+                      { (currentUserAnswer && normalizeAnswer(currentUserAnswer[entry.key])) === normalizedAnswer
                           ? (
                             <div style={{
                               display: 'flex',
@@ -137,7 +147,7 @@ export default class QuestionsTable extends React.Component {
                         const userAnswers = this.props.answers[userId];
                         return (
                           <TableCell padding="none" style={tenPxLRMarginsTextCenter}>
-                            { (userAnswers && normalizeAnswer(userAnswers[entry.key])) === normalizeAnswer(entry.answer)
+                            { (userAnswers && normalizeAnswer(userAnswers[entry.key])) === normalizedAnswer
                                   ? <CheckCircleIcon style={styleGreen} />
                                   : <CancelIcon style={{ color: 'red' }} />
                               }
