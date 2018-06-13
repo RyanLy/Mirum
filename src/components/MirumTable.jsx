@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import EditDialog from './EditDialog.jsx';
 
@@ -73,12 +74,14 @@ class MirumTable extends React.Component {
                   <TableCell padding="none" style={tenPxLRMargins} title={entry.reason}>{entry.reason}</TableCell>
                   <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
                   <TableCell padding="none" style={tenPxLRMargins} >
-                    <IconButton
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => this.handleEdit(entry)}
-                    >
-                      <EditIcon />
-                    </IconButton>
+                    <Tooltip title="Edit">
+                      <IconButton
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => this.handleEdit(entry)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))

@@ -12,7 +12,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-
+import Tooltip from '@material-ui/core/Tooltip';
 import { database } from './../client';
 
 const ARTICLES = ['a', 'an', 'the'];
@@ -148,8 +148,8 @@ export default class QuestionsTable extends React.Component {
                         return (
                           <TableCell padding="none" style={tenPxLRMarginsTextCenter}>
                             { (userAnswers && normalizeAnswer(userAnswers[entry.key])) === normalizedAnswer
-                                  ? <CheckCircleIcon style={styleGreen} />
-                                  : <CancelIcon style={{ color: 'red' }} />
+                                  ? <Tooltip title="Correct"><CheckCircleIcon style={styleGreen} /></Tooltip>
+                                  : <Tooltip title="Incorrect"><CancelIcon style={{ color: 'red' }} /></Tooltip>
                               }
                           </TableCell>
                           );
