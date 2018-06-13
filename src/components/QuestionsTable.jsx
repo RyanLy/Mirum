@@ -123,7 +123,7 @@ export default class QuestionsTable extends React.Component {
                   <TableRow hover>
                     <TableCell padding="none" style={tenPxLRMargins}>{entry.question}</TableCell>
                     <TableCell padding="none" style={tenPxLRMargins}>{entry.category}</TableCell>
-                    <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
+                    <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">{moment(entry.timestamp).format('MM/DD/YY h:mm A')}</TableCell>
                     <TableCell padding="none" style={tenPxLRMarginsTextCenter}>
                       { (currentUserAnswer && normalizeAnswer(currentUserAnswer[entry.key])) === normalizedAnswer
                           ? (

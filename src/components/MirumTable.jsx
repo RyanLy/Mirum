@@ -72,7 +72,7 @@ class MirumTable extends React.Component {
                   <TableCell padding="none" style={tenPxLRMargins}>{this.props.users[entry.user_id].name}</TableCell>
                   <TableCell padding="none" style={tenPxLRMargins}>{entry.points}</TableCell>
                   <TableCell padding="none" style={tenPxLRMargins} title={entry.reason}>{entry.reason}</TableCell>
-                  <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">{moment(entry.timestamp).format('MMM Do YYYY h:mm:ss A')}</TableCell>
+                  <TableCell padding="none" style={tenPxLRMargins} className="hidden-xs">{moment(entry.timestamp).format('MM/DD/YY h:mm A')}</TableCell>
                   <TableCell padding="none" style={tenPxLRMargins} >
                     <Tooltip title="Edit">
                       <IconButton
